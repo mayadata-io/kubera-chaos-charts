@@ -24,6 +24,8 @@ spec:
             template: load-test
           - name: run-chaos
             template: run-chaos
+        - - name: revert-chaos
+            template: revert-chaos    
 
     - name: install-application
       container:
@@ -124,7 +126,7 @@ spec:
                 apiVersion: litmuschaos.io/v1alpha1
                 kind: ChaosEngine
                 metadata:
-                  name: catalogue-pod-delete
+                  name: catalogue-pod-delete-chaos
                   namespace: litmus
                   labels:
                 spec:
@@ -172,11 +174,11 @@ spec:
         image: litmuschaos/litmus-checker:latest
         args: ["-file=/tmp/chaosengine.yaml","-saveName=/tmp/engine-name"]              
 
-    #- name: revert-chaos
-     # container:
-      #  image: lachlanevenson/k8s-kubectl
-       # command: [sh, -c]
-        #args:
-         # [
-          #  "kubectl delete chaosengine catalogue-pod-delete -n {{workflow.parameters.adminModeNamespace}}",
-           #]
+    - name: revert-chaos
+      container:
+        image: lachlanevenson/k8s-kubectl
+        command: [sh, -c]
+        args:
+        [
+          "kubectl delete chaosengine catalogue-pod-delete-chaos -n {{workflow.parameters.adminModeNamespace}}",
+        ]
