@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: argowf-chaos-catalogue-pod-delete
+  generateName: argowf-chaos-catalogue-pod-delete-
   namespace: litmus
 spec:
   entrypoint: argowf-chaos
@@ -127,8 +127,7 @@ spec:
                 kind: ChaosEngine
                 metadata:
                   name: catalogue-pod-delete-chaos
-                  namespace: litmus
-                  labels:
+                  namespace: {{workflow.parameters.adminModeNamespace}}
                 spec:
                   appinfo:
                     appns: 'sock-shop'
@@ -178,4 +177,7 @@ spec:
       container:
         image: lachlanevenson/k8s-kubectl
         command: [sh, -c]
-        args: "kubectl delete chaosengine catalogue-pod-delete-chaos -n {{workflow.parameters.adminModeNamespace}}"
+        args: 
+          [ 
+            "kubectl delete chaosengine catalogue-pod-delete-chaos -n {{workflow.parameters.adminModeNamespace}}",
+          ]

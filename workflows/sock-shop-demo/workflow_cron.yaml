@@ -131,7 +131,7 @@ spec:
                 kind: ChaosEngine
                 metadata:
                   name: catalogue-pod-delete-chaos
-                  namespace: litmus
+                  namespace: {{workflow.parameters.adminModeNamespace}}
                   labels:
                 spec:
                   appinfo:
@@ -182,4 +182,7 @@ spec:
       container:
         image: lachlanevenson/k8s-kubectl
         command: [sh, -c]
-        args: "kubectl delete chaosengine catalogue-pod-delete-chaos -n {{workflow.parameters.adminModeNamespace}}"
+        args: 
+          [
+            "kubectl delete chaosengine catalogue-pod-delete-chaos -n {{workflow.parameters.adminModeNamespace}}",
+          ]
