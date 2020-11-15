@@ -30,7 +30,7 @@ spec:
     - name: install-application
       container:
         image: litmuschaos/litmus-app-deployer:latest
-        args: ["-namespace=sock-shop","-typeName=weak", "-timeout=400"]
+        args: ["-namespace=sock-shop","-typeName=weak", "-timeout=400"] #for resilient provide the type -flagName=resilient
 
     - name: install-experiment
       inputs:
