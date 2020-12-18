@@ -65,7 +65,7 @@ spec:
                         - name: "check-probe-success"
                           type: "promProbe"
                           promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local"
+                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
                             query: "sum(irate(request_duration_seconds_count{job='sock-shop/front-end',status_code='200'}[1m])) by (status_code)"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
