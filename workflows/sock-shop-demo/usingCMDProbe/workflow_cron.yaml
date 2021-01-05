@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: argowf-chaos-catalogue-pod-delete-cron-wf
+  name: argowf-chaos-sock-shop-resiliency-cron-wf
   namespace: kubera
 spec:
   schedule: "0 * * * *"
@@ -228,6 +228,17 @@ spec:
                     - name: pod-cpu-hog
                       spec:
                         probe:
+                        - name: "check-frontend-access-url"
+                          type: "httpProbe"
+                          httpProbe/inputs:
+                            url: "http://front-end.sock-shop.svc.cluster.local"
+                            expectedResponseCode: "200"
+                          mode: "Continuous"
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 1
+                            retry: 1
+                            probePollingInterval: 1
                         - name: "check-database-integrity"
                           type: "cmdProbe"
                           cmdProbe/inputs:
@@ -243,19 +254,6 @@ spec:
                             interval: 2
                             retry: 1
                             initialDelaySeconds: 2
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
-                            comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
-                          mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
-                            retry: 1
                         components:
                           experimentImage: "litmuschaos/go-runner:ci"
                           env:
@@ -380,6 +378,17 @@ spec:
                     - name: pod-memory-hog
                       spec:
                         probe:
+                        - name: "check-frontend-access-url"
+                          type: "httpProbe"
+                          httpProbe/inputs:
+                            url: "http://front-end.sock-shop.svc.cluster.local"
+                            expectedResponseCode: "200"
+                          mode: "Continuous"
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 1
+                            retry: 1
+                            probePollingInterval: 1
                         - name: "check-database-integrity"
                           type: "cmdProbe"
                           cmdProbe/inputs:
@@ -395,19 +404,6 @@ spec:
                             interval: 2
                             retry: 1
                             initialDelaySeconds: 2
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
-                            comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
-                          mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
-                            retry: 1
                         components:
                           experimentImage: "litmuschaos/go-runner:latest"
                           env:
@@ -454,6 +450,17 @@ spec:
                     - name: pod-delete
                       spec:
                         probe:
+                        - name: "check-frontend-access-url"
+                          type: "httpProbe"
+                          httpProbe/inputs:
+                            url: "http://front-end.sock-shop.svc.cluster.local"
+                            expectedResponseCode: "200"
+                          mode: "Continuous"
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 1
+                            retry: 1
+                            probePollingInterval: 1
                         - name: "check-database-integrity"
                           type: "cmdProbe"
                           cmdProbe/inputs:
@@ -469,19 +476,6 @@ spec:
                             interval: 2
                             retry: 1
                             initialDelaySeconds: 2
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
-                            comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
-                          mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
-                            retry: 1
                         components:
                           env:
                             - name: TOTAL_CHAOS_DURATION

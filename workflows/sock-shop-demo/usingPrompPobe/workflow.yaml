@@ -198,74 +198,6 @@ spec:
             "kubectl apply -f /tmp/pod-cpu-hog.yaml -n {{workflow.parameters.adminModeNamespace}}",
           ]
 
-    - name: pod-cpu-hog
-      inputs:
-        artifacts:
-          - name: pod-cpu-hog
-            path: /tmp/chaosengine.yaml
-            raw:
-              data: |
-                apiVersion: litmuschaos.io/v1alpha1
-                kind: ChaosEngine
-                metadata:
-                  name: pod-cpu-hog-chaos
-                  namespace: {{workflow.parameters.adminModeNamespace}}
-                spec:
-                  appinfo:
-                    appns: 'sock-shop'
-                    applabel: 'name=catalogue'
-                    appkind: 'deployment'
-                  jobCleanUpPolicy: retain
-                  monitoring: false
-                  annotationCheck: 'false'
-                  engineState: 'active'
-                  chaosServiceAccount: litmus-admin
-                  experiments:
-                    - name: pod-cpu-hog
-                      spec:
-                        probe:
-                        - name: "check-frontend-access-url"
-                          type: "httpProbe"
-                          httpProbe/inputs:
-                            url: "http://front-end.sock-shop.svc.cluster.local"
-                            expectedResponseCode: "200"
-                          mode: "Continuous"
-                          runProperties:
-                            probeTimeout: 2
-                            interval: 1
-                            retry: 1
-                            probePollingInterval: 1
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
-                            comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
-                          mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
-                            retry: 1
-                        components:
-                          experimentImage: "litmuschaos/go-runner:ci"
-                          env:
-                            - name: TARGET_CONTAINER
-                              value: ''
-
-                            - name: NODE_CPU_CORE
-                              value: '1'
-
-                            - name: TOTAL_CHAOS_DURATION
-                              value: '' # in seconds
-
-                            - name: CHAOS_KILL_COMMAND
-                              value: "kill -9 $(ps afx | grep \"[md5sum] /dev/zero\" | awk '{print$1}' | tr '\n' ' ')"
-      container:
-        image: litmuschaos/litmus-checker:latest
-        args: ["-file=/tmp/chaosengine.yaml","-saveName=/tmp/engine-name"]
-
     - name: install-pod-memory-hog
       inputs:
         artifacts:
@@ -345,6 +277,74 @@ spec:
           [
             "kubectl apply -f /tmp/pod-memory-hog.yaml -n {{workflow.parameters.adminModeNamespace}}",
           ]
+
+    - name: pod-cpu-hog
+      inputs:
+        artifacts:
+          - name: pod-cpu-hog
+            path: /tmp/chaosengine.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  name: pod-cpu-hog-chaos
+                  namespace: {{workflow.parameters.adminModeNamespace}}
+                spec:
+                  appinfo:
+                    appns: 'sock-shop'
+                    applabel: 'name=catalogue'
+                    appkind: 'deployment'
+                  jobCleanUpPolicy: retain
+                  monitoring: false
+                  annotationCheck: 'false'
+                  engineState: 'active'
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-cpu-hog
+                      spec:
+                        probe:
+                        - name: "check-frontend-access-url"
+                          type: "httpProbe"
+                          httpProbe/inputs:
+                            url: "http://front-end.sock-shop.svc.cluster.local:80"
+                            expectedResponseCode: "200"
+                          mode: "Continuous"
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 1
+                            retry: 1
+                            probePollingInterval: 1
+                        - name: "check-probe-success"
+                          type: "promProbe"
+                          promProbe/inputs:
+                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
+                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
+                            comparator:
+                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
+                              value: "10"
+                          mode: "Edge"
+                          runProperties:  
+                            probeTimeout: 5
+                            interval: 5
+                            retry: 1
+                        components:
+                          experimentImage: "litmuschaos/go-runner:latest"
+                          env:
+                            - name: TARGET_CONTAINER
+                              value: ''
+
+                            - name: NODE_CPU_CORE
+                              value: '1'
+
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '' # in seconds
+
+                            - name: CHAOS_KILL_COMMAND
+                              value: "kill -9 $(ps afx | grep \"[md5sum] /dev/zero\" | awk '{print$1}' | tr '\n' ' ')"
+      container:
+        image: litmuschaos/litmus-checker:latest
+        args: ["-file=/tmp/chaosengine.yaml","-saveName=/tmp/engine-name"]
 
     - name: pod-memory-hog
       inputs:
@@ -482,8 +482,6 @@ spec:
         image: litmuschaos/litmus-checker:latest
         args: ["-file=/tmp/chaosengine.yaml","-saveName=/tmp/engine-name"]        
     
-   
-
     - name: load-test
       container:
         image: litmuschaos/litmus-app-deployer:latest
