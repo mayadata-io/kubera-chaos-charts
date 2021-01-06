@@ -319,7 +319,7 @@ spec:
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
                               value: "10"
@@ -387,7 +387,7 @@ spec:
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
                               value: "10"
@@ -449,15 +449,15 @@ spec:
                             expectedResponseCode: "200"
                           mode: "Continuous"
                           runProperties:
-                            probeTimeout: 2
-                            interval: 1
+                            probeTimeout: 5
+                            interval: 2
                             retry: 1
                             probePollingInterval: 1
                         - name: "check-probe-success"
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s])"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
                               value: "10"
