@@ -293,7 +293,7 @@ spec:
                 spec:
                   appinfo:
                     appns: 'sock-shop'
-                    applabel: 'name=catalogue'
+                    applabel: 'name=carts'
                     appkind: 'deployment'
                   jobCleanUpPolicy: retain
                   monitoring: false
@@ -319,10 +319,10 @@ spec:
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
+                              value: "500"
                           mode: "Edge"
                           runProperties:  
                             probeTimeout: 5
@@ -361,7 +361,7 @@ spec:
                 spec:
                   appinfo:
                     appns: 'sock-shop'
-                    applabel: 'name=front-end'
+                    applabel: 'name=orders'
                     appkind: 'deployment'
                   jobCleanUpPolicy: retain
                   monitoring: false
@@ -387,10 +387,10 @@ spec:
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
+                              value: "500"
                           mode: "Edge"
                           runProperties:  
                             probeTimeout: 5
@@ -457,10 +457,10 @@ spec:
                           type: "promProbe"
                           promProbe/inputs:
                             endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))"
+                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
                             comparator:
                               criteria: ">=" #supports >=,<=,>,<,==,!= comparision
-                              value: "10"
+                              value: "500"
                           mode: "Edge"
                           runProperties:  
                             probeTimeout: 5
