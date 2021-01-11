@@ -319,19 +319,21 @@ spec:
                             interval: 1
                             retry: 1
                             probePollingInterval: 1
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
+                        - name: "check-benchmark"
+                          type: "cmdProbe"
+                          cmdProbe/inputs:
+                            command: "curl http://qps-test.sock-shop.svc.cluster.local"
                             comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
+                              type: "int" # supports: string, int, float
+                              criteria: ">=" #supports >=,<=,>,<,==,!= for int and contains,equal,notEqual,matches,notMatches for string values
                               value: "500"
+                            source: "inline" # it can be “inline” or any image
                           mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 2
                             retry: 1
+                            initialDelaySeconds: 2
                         components:
                           experimentImage: "litmuschaos/go-runner:ci"
                           env:
@@ -388,19 +390,21 @@ spec:
                             interval: 1
                             retry: 1
                             probePollingInterval: 1
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
+                        - name: "check-benchmark"
+                          type: "cmdProbe"
+                          cmdProbe/inputs:
+                            command: "curl http://qps-test.sock-shop.svc.cluster.local"
                             comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
+                              type: "int" # supports: string, int, float
+                              criteria: ">=" #supports >=,<=,>,<,==,!= for int and contains,equal,notEqual,matches,notMatches for string values
                               value: "500"
+                            source: "inline" # it can be “inline” or any image
                           mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 2
                             retry: 1
+                            initialDelaySeconds: 2
                         components:
                           experimentImage: "litmuschaos/go-runner:latest"
                           env:
@@ -458,19 +462,21 @@ spec:
                             interval: 1
                             retry: 1
                             probePollingInterval: 1
-                        - name: "check-probe-success"
-                          type: "promProbe"
-                          promProbe/inputs:
-                            endpoint: "http://prometheus.monitoring.svc.cluster.local:9090"
-                            query: "sum(rate(request_duration_seconds_count{job='sock-shop/front-end',route='/',status_code='200'}[20s]))*100"
+                        - name: "check-benchmark"
+                          type: "cmdProbe"
+                          cmdProbe/inputs:
+                            command: "curl http://qps-test.sock-shop.svc.cluster.local"
                             comparator:
-                              criteria: ">=" #supports >=,<=,>,<,==,!= comparision
+                              type: "int" # supports: string, int, float
+                              criteria: ">=" #supports >=,<=,>,<,==,!= for int and contains,equal,notEqual,matches,notMatches for string values
                               value: "500"
+                            source: "inline" # it can be “inline” or any image
                           mode: "Edge"
-                          runProperties:  
-                            probeTimeout: 5
-                            interval: 5
+                          runProperties:
+                            probeTimeout: 2
+                            interval: 2
                             retry: 1
+                            initialDelaySeconds: 2
                         components:
                           env:
                             - name: TOTAL_CHAOS_DURATION
