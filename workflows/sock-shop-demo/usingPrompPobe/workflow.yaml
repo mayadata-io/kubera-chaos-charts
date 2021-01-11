@@ -6,9 +6,6 @@ metadata:
 spec:
   entrypoint: argowf-chaos
   serviceAccountName: argo-chaos
-  securityContext:
-    runAsUser: 1000
-    runAsNonRoot: true
   arguments:
     parameters:
       - name: adminModeNamespace
@@ -28,10 +25,10 @@ spec:
             template: pod-memory-hog
           - name: pod-cpu-hog
             template: pod-cpu-hog
-          - name: load-test
-            template: load-test  
         - - name: pod-delete
             template: pod-delete
+          - name: load-test
+            template: load-test  
         - - name: revert-chaos
             template: revert-chaos
 
@@ -313,7 +310,7 @@ spec:
                           runProperties:
                             probeTimeout: 2
                             interval: 1
-                            retry: 1
+                            retry: 2
                             probePollingInterval: 1
                         - name: "check-probe-success"
                           type: "promProbe"
@@ -375,13 +372,13 @@ spec:
                         - name: "check-frontend-access-url"
                           type: "httpProbe"
                           httpProbe/inputs:
-                            url: "http://front-end.sock-shop.svc.cluster.local"
+                            url: "http://front-end.sock-shop.svc.cluster.local:80"
                             expectedResponseCode: "200"
                           mode: "Continuous"
                           runProperties:
                             probeTimeout: 2
                             interval: 1
-                            retry: 1
+                            retry: 2
                             probePollingInterval: 1
                         - name: "check-probe-success"
                           type: "promProbe"
@@ -445,13 +442,13 @@ spec:
                         - name: "check-frontend-access-url"
                           type: "httpProbe"
                           httpProbe/inputs:
-                            url: "http://front-end.sock-shop.svc.cluster.local"
+                            url: "http://front-end.sock-shop.svc.cluster.local:80"
                             expectedResponseCode: "200"
                           mode: "Continuous"
                           runProperties:
                             probeTimeout: 5
                             interval: 2
-                            retry: 1
+                            retry: 2
                             probePollingInterval: 1
                         - name: "check-probe-success"
                           type: "promProbe"
