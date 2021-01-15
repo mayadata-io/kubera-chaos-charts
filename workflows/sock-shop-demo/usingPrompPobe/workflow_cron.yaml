@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: argowf-chaos-sock-shop-resiliency-cron-wf
+  generateName: argowf-chaos-sock-shop-resiliency-cron-wf-
   namespace: kubera
 spec:
   schedule: "0 * * * *"
@@ -186,7 +186,7 @@ spec:
 
                     ## Period to wait before and after injection of chaos in sec
                     - name: RAMP_TIME
-                      value: ''
+                      value: '20'
 
                     - name: LIB
                       value: 'litmus'
@@ -264,7 +264,7 @@ spec:
 
                       ## Period to wait before and after injection of chaos in sec
                       - name: RAMP_TIME
-                        value: ''     
+                        value: '20'     
 
                       ## env var that describes the library used to execute the chaos
                       ## default: litmus. Supported values: litmus, powerfulseal, chaoskube
