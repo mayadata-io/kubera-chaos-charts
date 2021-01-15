@@ -186,7 +186,7 @@ spec:
 
                     ## Period to wait before and after injection of chaos in sec
                     - name: RAMP_TIME
-                      value: '20'
+                      value: ''
 
                     - name: LIB
                       value: 'litmus'
@@ -264,7 +264,7 @@ spec:
 
                       ## Period to wait before and after injection of chaos in sec
                       - name: RAMP_TIME
-                        value: '20'     
+                        value: ''     
 
                       ## env var that describes the library used to execute the chaos
                       ## default: litmus. Supported values: litmus, powerfulseal, chaoskube
