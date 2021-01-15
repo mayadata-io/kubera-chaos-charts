@@ -25,10 +25,10 @@ spec:
             template: pod-memory-hog
           - name: pod-cpu-hog
             template: pod-cpu-hog
-        - - name: pod-delete
-            template: pod-delete
           - name: load-test
             template: load-test  
+        - - name: pod-delete
+            template: pod-delete
         - - name: revert-chaos
             template: revert-chaos
 
