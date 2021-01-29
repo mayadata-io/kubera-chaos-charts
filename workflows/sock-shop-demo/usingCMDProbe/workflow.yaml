@@ -626,7 +626,7 @@ spec:
                             probeTimeout: 2
                             interval: 2
                             retry: 1
-                            initialDelaySeconds: 2
+                            initialDelaySeconds: 10
                         components:
                           env:
                             - name: TOTAL_CHAOS_DURATION
