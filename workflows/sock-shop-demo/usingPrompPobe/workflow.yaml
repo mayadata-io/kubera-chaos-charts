@@ -32,10 +32,10 @@ spec:
             template: pod-cpu-hog
           - name: load-test
             template: load-test  
-        - - name: pod-delete
-            template: pod-delete
           - name: pod-network-loss
             template: pod-network-loss
+        - - name: pod-delete
+            template: pod-delete
         - - name: revert-chaos
             template: revert-chaos
 
