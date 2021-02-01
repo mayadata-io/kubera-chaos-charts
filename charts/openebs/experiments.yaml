@@ -1102,4 +1102,12 @@ spec:
     - name: cloud-secret
       mountPath: /tmp/
 
+    configmaps:
+    - name: openebs-pool-disk-loss
+      mountPath: /mnt/
+
+    secrets:
+    - name: cloud-secret
+      mountPath: /tmp/
+
 ---
