@@ -24,8 +24,6 @@ spec:
             template: install-pod-memory-hog
           - name: install-pod-cpu-hog
             template: install-pod-cpu-hog 
-          - name: install-pod-network-loss
-            template: install-pod-network-loss
         - - name: load-test
             template: load-test
           - name: pod-memory-hog
@@ -36,6 +34,8 @@ spec:
             template: pod-network-loss
         - - name: pod-delete
             template: pod-delete
+        - - name: install-pod-network-loss
+            template: install-pod-network-loss
         - - name: revert-chaos
             template: revert-chaos
 
