@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
   name: argo-chaos-kube-proxy-cron-wf
-  namespace: litmus
+  namespace: kubera
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: "Forbid"
@@ -16,7 +16,7 @@ spec:
     arguments:
       parameters:
         - name: adminModeNamespace
-          value: "litmus"
+          value: "kubera"
     templates:
       - name: argowf-chaos
         steps:
@@ -236,5 +236,5 @@ spec:
           image: lachlanevenson/k8s-kubectl
           command: [sh, -c]
           args:
-            - "kubectl delete chaosengines --all -n
+            - "kubectl delete chaosengines kube-proxy-node-cpu-hog kube-proxy-pod-memory-hog-chaos kube-proxy-pod-cpu-hog-chaos kube-proxy-node-memory-hog-chaos kube-proxy-pod-delete-chaos -n
               {{workflow.parameters.adminModeNamespace}}"

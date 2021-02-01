@@ -9,7 +9,7 @@ on: [ push ]
 jobs:
   push:
     runs-on: ubuntu-latest
-    if: github.repository == 'litmuschaos/chaos-charts'
+    if: github.repository == 'mayadata-io/kubera-chaos-charts'
     steps:
 
       # Install golang
