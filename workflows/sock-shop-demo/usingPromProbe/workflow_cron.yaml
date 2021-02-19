@@ -22,8 +22,6 @@ spec:
       steps:
         - - name: install-application
             template: install-application
-          - name: load-test
-            template: load-test 
         - - name: install-pod-delete
             template: install-pod-delete
           - name: install-pod-memory-hog
@@ -32,6 +30,8 @@ spec:
             template: install-pod-cpu-hog 
           - name: install-pod-network-loss
             template: install-pod-network-loss
+          - name: load-test
+            template: load-test  
         - - name: pod-memory-hog
             template: pod-memory-hog
           - name: pod-cpu-hog
