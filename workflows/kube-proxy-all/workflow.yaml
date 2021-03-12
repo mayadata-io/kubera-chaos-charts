@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: argowf-chaos-kube-proxy-all-
-  namespace: kubera
+  namespace: litmus
 spec:
   entrypoint: argowf-chaos
   serviceAccountName: argo-chaos
@@ -12,7 +12,7 @@ spec:
   arguments:
     parameters:
       - name: adminModeNamespace
-        value: kubera
+        value: litmus
 
   templates:
     - name: argowf-chaos
