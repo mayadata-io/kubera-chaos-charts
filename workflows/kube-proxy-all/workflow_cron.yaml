@@ -236,4 +236,5 @@ spec:
           image: alpine/k8s:1.18.2
           command: [sh, -c]
           args:
-            - "kubectl delete chaosengines --all -n {{workflow.parameters.adminModeNamespace}}"
+            - "kubectl delete chaosengines --all -n
+              {{workflow.parameters.adminModeNamespace}}"
